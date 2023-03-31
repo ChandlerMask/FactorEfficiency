@@ -1,16 +1,18 @@
-# This is a sample Python script.
+#!/usr/bin/env python
+# -*- coding: UTF-8 -*-
+'''
+@Project ：FactorEfficiency 
+@File    ：main.py
+@Author  ：陈政霖
+@Date    ：2023-03-29 23:21 
+'''
+import numpy as py
+import pandas as pd
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+from ols import BestSubsetOls
+from database import DataBaseOriginal, FeaturesDataBase, ModelsDataBase
+from features import FillerWithZero, FillerWithALLMedian, FillerWithClusterMedian
+
+# data processing
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
-
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/

@@ -1,6 +1,6 @@
 import numpy as np
 import itertools
-from OLStemplate import Ols
+from ols.OLStemplate import Ols
 
 
 class CvOls(object):
@@ -128,3 +128,5 @@ class BestSubsetOls(object):
         best_model = self.result_dict["models"][best_index]
 
         return best_subset, best_model
+
+

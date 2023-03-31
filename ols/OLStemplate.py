@@ -100,3 +100,5 @@ class Ols(object):
         bic = -2 * log_likelihood + np.log(n) * p
 
         return bic
+
+
