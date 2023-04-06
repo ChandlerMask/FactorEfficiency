@@ -1,16 +1,17 @@
 from database.databasetemplate import DataBaseTemplate
-from database.differentdatabase import DataBaseOriginal, FeaturesDataBase, ModelsDataBase
+from database.differentdatabase import DataBaseOriginal, SummaryDataBase, FeaturesDataBase, ModelsDataBase
 
 
 """
 数据库结构介绍
-DataBaseTemplate：数据总表数据库
-    1. 链接原始数据：三个csv文件和json文件
-    2. 链接填充后数据总表：train、val、test分别一个数据库，每个数据库中保存不同填充方式的数据总表（数据总表与原始csv格式一致）
-    
-DataBase子类：模型数据库
-    1. 每个子类对应一种填充方式，下面链接两个数据库：因子特征数据库与模型数据数据库
-    2. 因子特征数据库：每个因子一个数据表
-    3. 模型数据数据库：每个时间节点一个数据表
+DataBaseTemplate：数据库基类
+
+不同的数据子类
+DataBaseOriginal：链接项目原有数据
+SummaryDataBase：链接各填充后数据库，共有九个数据库，分别为【训练集、测试集、验证集】和【填充零值、填充中位数、填充类别中中位数】的排列组合
+FeaturesDataBase：链接计算后的特征数据库，每个因子一个表，columns为特征，index为时间
+ModelsDataBase：链接用于模型的数据库，一个时间点一个表，columns为特征，index为不同因子
+
+ModelDataBase中的数据表，lag_0为时间节点下一个月的数据，属于未来数据，作为因变量使用：["yield_lag_0", ”std_lag_0"]
 """
 

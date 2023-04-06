@@ -11,7 +11,7 @@ from abc import ABC
 import pandas as pd
 import numpy as np
 from features.filllertemplate import FillerTemplate
-from database import DataBase
+from database import DataBaseOriginal
 
 
 class FillerWithZero(FillerTemplate):
@@ -23,21 +23,25 @@ class FillerWithZero(FillerTemplate):
         return data
 
 
-class FillerWithALLMedian(FillerTemplate):
+class FillerWithMedian(FillerTemplate):
     method = "fill with the median of all factors"
 
     def _fill_row(self, row: pd.Series) -> pd.Series:
-        median = row.median()
+        if row.index[0] == "date":
+            median = row[1:].median()
+        else:
+            raise KeyError("the first column is not data, please have a check")
+
         row.fillna(median, inplace=True)
         return row
 
     def _filler(self):
         data = self.data
-        data.apply(lambda x: self._fill_row(x), axis=1)
+        data = data.apply(lambda x: self._fill_row(x), axis=1)
         return data
 
 
-cluster_dict = DataBase.get_json()
+cluster_dict = DataBaseOriginal.get_json()
 
 
 class FillerWithClusterMedian(FillerTemplate):
@@ -55,8 +59,10 @@ class FillerWithClusterMedian(FillerTemplate):
 
     def _filler(self):
         columns = self.data.columns
-        result_list = [self._fill_row(df) for df in self._pick_cluster()]
+        date_column = self.data["date"].to_frame("date")
+        result_list = [df.apply(lambda x: self._fill_row(x), axis=1) for df in self._pick_cluster()]
         df_result = pd.concat(result_list, axis=1)
+        df_result = pd.concat([date_column, df_result], axis=1)
         df_result = df_result[columns]  # 保证因子的顺序与输入时一致
         return df_result
 

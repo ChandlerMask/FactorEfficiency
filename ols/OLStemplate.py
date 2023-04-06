@@ -21,8 +21,8 @@ class Ols(object):
         self.x_bar = self.x.mean(axis=0)
         self.y_bar = self.y.mean()
 
-        self.x_center = self.x.T.dot(self.x) - np.outer(self.x_bar, self.x_bar)
-        self.xy_center = self.x.T.dot(self.y) - self.x_bar * self.y_bar
+        self.x_center = self.x.T.dot(self.x) - self.n * np.outer(self.x_bar, self.x_bar)
+        self.xy_center = self.x.T.dot(self.y) - self.n * self.x_bar * self.y_bar
 
         self.beta = None
         self.y_predict = None
@@ -100,5 +100,6 @@ class Ols(object):
         bic = -2 * log_likelihood + np.log(n) * p
 
         return bic
+
 
 

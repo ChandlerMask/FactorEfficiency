@@ -31,12 +31,7 @@ class DataBaseTemplate(object):
     @classmethod
     def read_csv(cls, file_path: str):
         df = pd.read_csv(file_path)
-
-        try:
-            del df['Unnamed: 0']
-        except KeyError:
-            pass
-
+        df = df.rename(columns={'Unnamed: 0': 'date'})
         return df
 
     @classmethod
@@ -78,5 +73,5 @@ class DataBaseTemplate(object):
     def _store_data_to_db(cls, db_name: str, table_name: str, data: pd.DataFrame):
         db_path = cls._get_db_path(db_name=db_name)
         con = sqlite3.connect(db_path)
-        data.to_sql(table_name, con=con)
+        data.to_sql(table_name, con=con, if_exists="replace", index=False)
         pass
