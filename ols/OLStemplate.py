@@ -21,8 +21,8 @@ class Ols(object):
         self.x_bar = self.x.mean(axis=0)
         self.y_bar = self.y.mean()
 
-        self.x_center = self.x.T.dot(self.x) - self.n * np.outer(self.x_bar, self.x_bar)
-        self.xy_center = self.x.T.dot(self.y) - self.n * self.x_bar * self.y_bar
+        self.x_center = np.dot(self.x.T, self.x) - self.n * np.outer(self.x_bar, self.x_bar)
+        self.xy_center = np.dot(self.x.T, self.y) - self.n * self.y_bar * self.x_bar
 
         self.beta = None
         self.y_predict = None
@@ -34,6 +34,7 @@ class Ols(object):
         b, _ = linalg.lapack.dpotrs(L, self.xy_center)
         b0 = self.y_bar - np.inner(self.x_bar, b)
         beta = np.r_[b0, b]
+        # print(L, "\n", self.xy_center, "\n", b, "\n", b0)
         return beta
 
     def cal_predict(self, x: np.ndarray = None):

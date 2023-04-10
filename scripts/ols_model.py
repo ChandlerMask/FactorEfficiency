@@ -15,6 +15,7 @@ from database import DataBaseOriginal, SummaryDataBase, FeaturesDataBase, Models
 from features import FillerWithZero, FillerWithMedian, FillerWithClusterMedian, YieldFeature, StdFeature
 from const.constant import POINTS_DICT, DATA_TYPES_LIST, TARGET_LIST, DROP_LIST
 from ols import Ols
+import statsmodels.api as sm
 
 
 class ModelDataProvider(object):
@@ -69,20 +70,10 @@ if __name__ == "__main__":
     feature_data = dataprovider.get_features_data()
     yield_data = dataprovider.get_yield_data()
 
-    ols = Ols(x=feature_data, y=yield_data)
-    ols.ols()
-    ols.cal_R()
+    # ols = Ols(x=feature_data, y=yield_data)
+    # ols.cal_R()
 
-
-    y_predict = ols.y_predict
-    y = ols.y
-
-    y = self.y
-    y_bar = self.y_bar
-    y_predict = self.y_predict
-
-    y_predict_tilde = y_predict - y_bar
-    y_tilde = y - y_bar
-
-    sse = y_predict_tilde.dot(y_predict_tilde)
-    sst = y_tilde.dot(y_tilde)
+    best_subset = BestSubsetOls(x=feature_data, y=yield_data)
+    result_dict = best_subset.get_indicators()
+    df_result = pd.DataFrame(result_dict)
+    df_result.to_csv("ols_result/result_1.csv")
